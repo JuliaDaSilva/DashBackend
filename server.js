@@ -23,7 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // FIX: serve uploads from backend/uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+const isProd = process.env.NODE_ENV === "production";
+const uploadsPath = isProd ? "/var/data/uploads" : path.join(__dirname, "uploads");
+
+app.use("/uploads", express.static(uploadsPath));
+
 
 // Routes
 app.use("/api/auth", authRoutes);
