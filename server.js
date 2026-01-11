@@ -7,6 +7,8 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import passwordResetRoutes from "./routes/passwordResetRoutes.js";
+
 
 dotenv.config();
 connectDB();
@@ -20,6 +22,7 @@ const __dirname = path.dirname(__filename);
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api/auth", passwordResetRoutes);
 app.use(express.urlencoded({ extended: true }));
 
 // FIX: serve uploads from backend/uploads folder
