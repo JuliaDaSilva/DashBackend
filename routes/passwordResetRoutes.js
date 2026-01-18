@@ -43,7 +43,13 @@ router.post("/forgot-password", async (req, res) => {
     await user.save();
 
     // 4) Email reset link with RAW token
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${rawToken}`;
+    const base = (process.env.FRONTEND_URL || "http://localhost:5173/#").replace(/\/+$/, ""); 
+    // removes trailing slashes, so no "//reset-password"
+
+    const resetLink = base.includes("/#")
+      ? `${base}/reset-password?token=${rawToken}`      // -> http://localhost:5173/#/reset-password?token=...
+      : `${base}/#/reset-password?token=${rawToken}`;   // fallback if someone sets FRONTEND_URL without /#
+
     await sendResetEmail(user.email, resetLink);
 
     return res.status(200).json(genericMsg);
