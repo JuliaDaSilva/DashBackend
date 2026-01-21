@@ -7,8 +7,6 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
-import passwordResetRoutes from "./routes/passwordResetRoutes.js";
-
 
 dotenv.config();
 connectDB();
@@ -20,26 +18,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true); // Postman/curl
-    if (origin.startsWith("http://localhost:517")) return cb(null, true); // 5173, 5174, etc.
-    if (origin.startsWith("http://127.0.0.1:517")) return cb(null, true);
-
-    const prod = process.env.FRONTEND_URL?.replace("/#", "");
-    if (prod && origin === prod) return cb(null, true);
-
-    return cb(new Error("Not allowed by CORS"));
-  },
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
-
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api/auth", passwordResetRoutes);
-
 
 // FIX: serve uploads from backend/uploads folder
 const isProd = process.env.NODE_ENV === "production";

@@ -6,9 +6,6 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 
-  passwordResetTokenHash: { type: String },
-  passwordResetExpiresAt: { type: Date },
-
 
   // Reference to the user's application (links to application model by ID)
   application: { 
